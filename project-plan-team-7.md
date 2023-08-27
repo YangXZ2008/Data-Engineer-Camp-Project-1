@@ -31,6 +31,9 @@ Fuel API from https://api.nsw.gov.au/
 
 ![images/ETL.png](images/ETL.png)
 
+
+![images/Project1_diagram.jpg](images/Project1_diagram.jpg)
+
 ## Breakdown of tasks 
 How is your project broken down? Who is doing what?
 
