@@ -9,7 +9,7 @@ services:
     depends_on:
       - db
     networks:
-      - my_network
+      - custom_network
   db:
     image: postgres:latest
     environment:
@@ -19,10 +19,10 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
     networks:
-      - my_network
+      - custom_network
 
 networks:
-  my_network:
+  custom_network:
 
 volumes:
   pg_data:

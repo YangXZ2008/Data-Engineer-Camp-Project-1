@@ -1,14 +1,15 @@
 FROM continuumio/miniconda3
 
+# Set the working directory inside the container
 WORKDIR /app
 
-COPY environment.yml environment.yml
-COPY app/requirements.txt requirements.txt
-RUN conda env create -f environment.yml && \
-    conda run -n my_env pip install -r requirements.txt
+# Copy environment.yml and main_app.py into the container
+COPY environment.yml .
+COPY main.py .
 
-COPY . .
+# Create the environment
+RUN conda env create -f environment.yml
 
-SHELL ["conda", "run", "-n", "my_env", "/bin/bash", "-c"]
+# Activate the environment and run the main app
+CMD ["/bin/bash", "-c", "source activate etl && python main.py"]
 
-CMD ["python", "main_app.py"]
