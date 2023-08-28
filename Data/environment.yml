@@ -8,3 +8,5 @@ dependencies:
   - requests
   - psycopg2
   - sqlalchemy
+  - jinja2
+  - yaml
