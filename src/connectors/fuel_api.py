@@ -22,12 +22,11 @@ class FuelAPIClient:
         self.fuel_api_url = "https://api.onegov.nsw.gov.au/FuelPriceCheck/v2/fuel/prices?states=NSW"
 
     def get_access_token(self):
-
         if os.path.exists(self.access_token_file):
             token_info = json.load(open(self.access_token_file))
             issued_time = datetime.fromtimestamp(int(token_info["issued_at"])/1e3)
             current_time = datetime.now()
-            if (current_time - issued_time).seconds < int(token_info["expires_in"]):
+            if (current_time - issued_time).total_seconds() < int(token_info["expires_in"]):
                 # old token is still valid
                 print("old token is still valid!")
                 self.access_code = token_info["access_token"]
@@ -51,6 +50,8 @@ class FuelAPIClient:
             outfile.write(json_object)
 
     def get_fuel_data(self):
+        if self.access_code is None:
+            self.get_access_token()
         headers = {
             'accept' : "application/json",
             'content-type': "application/json; charset=utf-8",
@@ -64,47 +65,11 @@ class FuelAPIClient:
             raise Exception(f"Failed to extract data from the Fuel API. Status Code: {response.status_code}. Response: {response.text}")
 
         data = response.json()
+        # print(type(data))
+        # print(data.keys())
+        # df = pd.json_normalize(data)
+        # df.to_csv("src/connectors/sample_fuel.csv")
 
-        print(type(data))
-        print(data.keys())
-        df = pd.json_normalize(data)
-        df.to_csv("src/connectors/sample_fuel.csv")
+        return data
+        
 
-
-if __name__ == '__main__':
-    load_dotenv()
-    API = os.getenv('APIKEY')
-    APISECRET = os.getenv('APISECRET')
-    AUTHORIZATIONHEADER = os.getenv('AUTHORIZATIONHEADER')
-    testAPI = FuelAPIClient(API, APISECRET, AUTHORIZATIONHEADER)
-    testAPI.get_access_token()
-    testAPI.get_fuel_data()
-
-
-
-    # payload = "{\"fueltype\":\"\",\"brand\":[],\"namedlocation\":\"\",\"referencepoint\":{\"latitude\":\"\",\"longitude\":\"\"},\"sortby\":\"\",\"sortascending\":\"\"}"
-    # headers2 = {
-    #     'accept' : "application/json",
-    #     'content-type': "application/json; charset=utf-8",
-    #     'authorization': "Bearer " + "Ikb4ZnNwoBRs4GeQTQfuQDDf7t0I",
-    #     'apikey': "sF0XWOGwO33OJLjaE6SzHTN35eomO7Rs",
-    #     'transactionid': "1",
-    #     'requesttimestamp': "27/08/2023 03:06:30 PM"
-    #     }
-
-    # print("="*100)
-    # pprint(headers2)
-    # print("="*100)
-    # response2 = requests.request("GET", url2, headers=headers2)
-
-    # data = response2.json()
-
-    # print(type(data))
-    # print(data.keys())
-
-    # pprint(data["prices"])
-
-    #df = pd.json_normalize(data)
-    #df.to_csv("sample_fuel.csv")
-    # print(response2)
-    # print(response2.text)
