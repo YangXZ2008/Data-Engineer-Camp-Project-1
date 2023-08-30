@@ -25,7 +25,7 @@ class NswApiClient:
         return auth_items
 
     def extract_nsw_fuel_data(self) -> dict:
-        
+        #get authen tication
         authentication = self.get_nsw_auth_api()
 
         headers = {
@@ -38,6 +38,6 @@ class NswApiClient:
 
         response = requests.get(self.fuel_base_url, headers=headers)
         if response.status_code == 200 and response.json().get("prices") is not None and response.json().get("stations") is not None:
-            return response.json()
+            return response.json() #get data
         else:
             raise Exception(f"Failed to extract data from NSW API. Status Code: {response.status_code}. Response: {response.text}")
