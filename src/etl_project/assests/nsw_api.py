@@ -2,8 +2,8 @@ import pandas as pd
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from sqlalchemy import Table, MetaData
-from src.connectors.postgresql import PostgreSqlClient
-from src.connectors.nsw_api import NswApiClient
+from etl_project.connectors.postgresql import PostgreSqlClient
+from etl_project.connectors.nsw_api import NswApiClient
 import uuid
 
 def extract(api_client: NswApiClient):

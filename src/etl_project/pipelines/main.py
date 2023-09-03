@@ -2,15 +2,15 @@ import pandas as pd
 from dotenv import load_dotenv
 import os 
 from sqlalchemy import Table, Column, Integer, String, MetaData, Float
-from src.connectors.nsw_api import NswApiClient
-from src.connectors.postgresql import PostgreSqlClient
-from src.assests.nsw_api import extract, transform_2_df, load
+from etl_project.connectors.nsw_api import NswApiClient
+from etl_project.connectors.postgresql import PostgreSqlClient
+from etl_project.assests.nsw_api import extract, transform_2_df, load
 
 
 
 if __name__ == "__main__":
     load_dotenv()
-    AUTH = os.environ.get("AUTH")
+    AUTH = f"Basic {os.environ.get('AUTH')}"
     DB_USERNAME = os.environ.get("DB_USERNAME")
     DB_PASSWORD = os.environ.get("DB_PASSWORD")
     SERVER_NAME = os.environ.get("SERVER_NAME")
@@ -55,3 +55,4 @@ if __name__ == "__main__":
     load(df=df_stations_final, pg_client=postgresql_client, table=fuel_stations_tbl, metadata=meta, loadtype='normal')
 
     load(df=df_prices_final, pg_client=postgresql_client, table=fuel_prices_tbl, metadata=meta, loadtype='chunk')
+    print("Successful")
