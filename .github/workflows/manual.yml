@@ -29,5 +29,6 @@ jobs:
 
       - name: Push Docker image to ECR for app service
         run: |
-          docker tag data-engineer-camp-project-1-app:latest 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1:latest
+          docker-compose images
+          docker tag data-engineer-camp-project-1-app-1:latest 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1:latest
           docker push 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1:latest
