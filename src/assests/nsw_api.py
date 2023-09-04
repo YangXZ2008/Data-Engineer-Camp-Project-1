@@ -18,7 +18,7 @@ def extract(api_client: NswApiClient):
     stations_df = pd.json_normalize(data=stations_data)
     return prices_df, stations_df
 
-def transform_2_df(prices_df: pd.DataFrame, stations_df: pd.DataFrame) -> pd.DataFrame:
+def transform(prices_df: pd.DataFrame, stations_df: pd.DataFrame) -> pd.DataFrame:
 
     #prices
     prices_df.rename(columns={
@@ -40,6 +40,6 @@ def transform_2_df(prices_df: pd.DataFrame, stations_df: pd.DataFrame) -> pd.Dat
 
     return prices_df, stations_df
 
-def load(df: pd.DataFrame, pg_client:PostgreSqlClient, table, metadata, loadtype:str):
-    pg_client.write_to_table(data=df.to_dict(orient="records"), table=table, metadata=metadata, loadtype=loadtype)  
-      
+def load(prices_df: pd.DataFrame, stations_df: pd.DataFrame, pg_client:PostgreSqlClient, table, metadata):
+    pg_client.write_to_table(data=prices_df.to_dict(orient="records"), table=table, metadata=metadata)  
+    pg_client.write_to_table(data=stations_df.to_dict(orient="records"), table=table, metadata=metadata)  
