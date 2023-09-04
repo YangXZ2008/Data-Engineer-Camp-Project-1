@@ -3,7 +3,7 @@ version: "3"
 services:
   app:
     build:
-      context: ./Data
+      context: ./src
     ports:
       - "5000:5000"
     depends_on:
@@ -16,6 +16,8 @@ services:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
     networks:
