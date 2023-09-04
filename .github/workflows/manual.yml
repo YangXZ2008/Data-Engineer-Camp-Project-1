@@ -20,12 +20,14 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Configure Docker
+      - name: Get ECR Login Command
+        id: ecr-login
         run: |
-          echo '{"credsStore": "ecr-login"}' > ~/.docker/config.json
+          echo "::set-output name=loginCommand::$(aws ecr get-login-password --region us-east-1)"
 
-      - name: Login to Amazon ECR
-        run: aws ecr get-login-password --region <your-aws-region> | docker login --username AWS --password-stdin <your-ecr-registry>
+      - name: Docker Login to ECR
+        run: |
+          $(echo ${{ steps.ecr-login.outputs.loginCommand }})
 
       - name: Build Docker image
         run: docker-compose build
