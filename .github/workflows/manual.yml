@@ -22,12 +22,12 @@ jobs:
 
       - name: Docker Login to Amazon ECR
         run: |
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 444987252577.dkr.ecr.us-east-1.amazonaws.com
 
-      - name: Build Docker image
-        run: docker-compose build
+      - name: Build Docker image for app service
+        run: docker-compose -f docker-compose.yml build app
 
-      - name: Push Docker image to ECR
+      - name: Push Docker image to ECR for app service
         run: |
-          docker-compose push app
-          docker-compose push db
+          docker tag app:latest 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1:latest
+          docker push 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1:latest
