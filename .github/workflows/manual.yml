@@ -20,14 +20,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Get ECR Login Command
-        id: ecr-login
+      - name: Docker Login to Amazon ECR
         run: |
-          echo "::set-output name=loginCommand::$(aws ecr get-login-password --region us-east-1)"
-
-      - name: Docker Login to ECR
-        run: |
-          $(echo ${{ steps.ecr-login.outputs.loginCommand }})
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1
 
       - name: Build Docker image
         run: docker-compose build
