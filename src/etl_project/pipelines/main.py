@@ -4,7 +4,7 @@ import os
 from sqlalchemy import Table, Column, Integer, String, MetaData, Float
 from etl_project.connectors.nsw_api import NswApiClient
 from etl_project.connectors.postgresql import PostgreSqlClient
-from etl_project.assests.nsw_api import extract, transform_2_df, load
+from etl_project.assets.nsw_api import extract, transform_2_df, load
 
 
 
