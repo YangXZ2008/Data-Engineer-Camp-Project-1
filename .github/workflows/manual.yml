@@ -13,12 +13,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Login to Amazon ECR
-        uses: aws-actions/amazon-ecr-login@v1
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          registry: ${{ secrets.ECR_REGISTRY }}
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Configure Docker
+        run: |
+          echo '{"credsStore": "ecr-login"}' > ~/.docker/config.json
+
+      - name: Login to Amazon ECR
+        run: aws ecr get-login-password --region <your-aws-region> | docker login --username AWS --password-stdin <your-ecr-registry>
 
       - name: Build Docker image
         run: docker-compose build
@@ -27,4 +34,3 @@ jobs:
         run: |
           docker-compose push app
           docker-compose push db
-
