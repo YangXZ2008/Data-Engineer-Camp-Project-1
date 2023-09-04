@@ -26,6 +26,8 @@ jobs:
           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1
 
           # Build and tag Docker images
-          docker-compose -f docker-compose.yml build
-          docker-compose -f docker-compose.yml push
+          docker tag app:latest 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1:latest
+
+          docker push 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1:latest
+
 
