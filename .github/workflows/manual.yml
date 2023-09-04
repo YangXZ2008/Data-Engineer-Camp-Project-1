@@ -27,8 +27,8 @@ jobs:
       - name: Build and push Docker images
         run: |
           docker-compose build
-          docker tag app:latest 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1:latest/app:latest
-          docker tag db:latest 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1:latest/db:latest
-          docker push 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1:latest/app:latest
-          docker push 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1:latest/db:latest
-         
+          docker tag app:latest 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1/app:latest
+          docker tag db:latest 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1/db:latest
+          docker push 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1/app:latest
+          docker push 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1/db:latest
+
