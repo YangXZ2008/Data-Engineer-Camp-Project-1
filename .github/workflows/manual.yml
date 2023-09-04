@@ -1,56 +1,34 @@
-name: Docker Image CI/CD
+name: Build and Push Docker Images to ECR
 
 on:
   push:
     branches:
-      - main  # Change this to your main branch name if needed
+      - main
 
 jobs:
-  build-and-push-images:
+  build_and_push_images:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Docker
-        uses: docker/setup-docker@v2
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          docker-host: tcp://localhost:2375  # Use the appropriate Docker host
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1 
 
-      - name: Check Existing Docker Images
+      - name: Login to Amazon ECR
         run: |
-          docker images
-        continue-on-error: true
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1
 
-      - name: Log into Amazon ECR
+      - name: Build and push Docker images
         run: |
-          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 444987252577.dkr.ecr.us-east-1.amazonaws.com
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-      - name: Tag and Push 'app' Image
-        run: |
+          docker-compose build
+          docker-compose images
           docker tag app:latest 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1/app:latest
-          docker push 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1/app:latest
-        continue-on-error: true
-
-      - name: Tag and Push 'db' Image
-        run: |
           docker tag db:latest 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1/db:latest
+          docker push 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1/app:latest
           docker push 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1/db:latest
-        continue-on-error: true
-
-      - name: Verify Pushed Images
-        run: |
-          docker images
-        continue-on-error: true
-
-      # Add more steps here for your deployment, if needed
-
-      - name: Optional: Cleanup Local Images
-        run: |
-          docker rmi app:latest
-          docker rmi db:latest
-        continue-on-error: true
