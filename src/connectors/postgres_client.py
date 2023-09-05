@@ -26,7 +26,7 @@ class PostgreSqlClient:
             drivername="postgresql",
             username='postgres',
             password='postgres',
-            host="project1.c8jtsjfdp6ka.us-east-1.rds.amazonaws.com",  # Use "db" as the hostname
+            host="database-1.c8jtsjfdp6ka.us-east-1.rds.amazonaws.com",  # Use "db" as the hostname
             port=5432,
             database="postgres",
         )
