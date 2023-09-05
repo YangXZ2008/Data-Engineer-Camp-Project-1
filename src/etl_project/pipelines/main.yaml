@@ -1,0 +1,7 @@
+name: nsw_fuel_price
+config: 
+  transform_template_path: "./etl_project/assets/sql/transform"
+  log_folder_path: "./etl_project/logs"
+schedule:
+  run_seconds: 2
+  poll_seconds: 10

@@ -1,0 +1,8 @@
+2023-09-06 01:11:48,222 - nsw_fuel_price - INFO - Creating DB client
+2023-09-06 01:11:48,222 - nsw_fuel_price - INFO - Requesting data from NSW
+2023-09-06 01:11:48,224 - nsw_fuel_price - INFO - Extracting NSW data
+2023-09-06 01:11:49,512 - nsw_fuel_price - INFO - Transforming NSW data
+2023-09-06 01:11:49,528 - nsw_fuel_price - INFO - Creating tables in postgres
+2023-09-06 01:11:49,529 - nsw_fuel_price - INFO - Loading data into tables
+2023-09-06 01:11:50,403 - nsw_fuel_price - INFO - Reading SQL script
+2023-09-06 01:11:50,403 - nsw_fuel_price - ERROR - Pipeline failed with exception 'str' object has no attribute 'get'
