@@ -13,6 +13,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Set environment variables
+        run: |
+          echo "APIKEY=1gK0kSecgyAleziQ5Ae5XjaT8xINAyHx" >> $GITHUB_ENV
+          echo "APISECRET=dIB3cFpoLo6NTMP4" >> $GITHUB_ENV
+          echo "AUTHORIZATIONHEADER=Basic MWdLMGtTZWNneUFsZXppUTVBZTVYamFUOHhJTkF5SHg6ZElCM2NGcG9MbzZOVE1QNA==" >> $GITHUB_ENV
+          echo "DB_USERNAME=postgres" >> $GITHUB_ENV
+          echo "DB_PASSWORD=postgres" >> $GITHUB_ENV
+          echo "DB_SERVER_NAME=postgres" >> $GITHUB_ENV
+          echo "DB_DATABASE_NAME=postgres" >> $GITHUB_ENV
+          echo "PORT=5432" >> $GITHUB_ENV
+
       - name: Set up AWS CLI
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -29,7 +40,25 @@ jobs:
           docker-compose -f "docker-compose.yml" up -d --build
           docker images
           docker tag data-engineer-camp-project-1_app:latest 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1:latest
+        env:
+          APIKEY: ${{ secrets.APIKEY }}
+          APISECRET: ${{ secrets.APISECRET }}
+          AUTHORIZATIONHEADER: ${{ secrets.AUTHORIZATIONHEADER }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_SERVER_NAME: ${{ secrets.DB_SERVER_NAME }}
+          DB_DATABASE_NAME: ${{ secrets.DB_DATABASE_NAME }}
+          PORT: ${{ secrets.PORT }}
 
       - name: Push Docker images to ECR
         run: |
           docker push 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1:latest
+        env:
+          APIKEY: ${{ secrets.APIKEY }}
+          APISECRET: ${{ secrets.APISECRET }}
+          AUTHORIZATIONHEADER: ${{ secrets.AUTHORIZATIONHEADER }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_SERVER_NAME: ${{ secrets.DB_SERVER_NAME }}
+          DB_DATABASE_NAME: ${{ secrets.DB_DATABASE_NAME }}
+          PORT: ${{ secrets.PORT }}

@@ -4,12 +4,22 @@ services:
   app:
     build:
       context: ./src
+      args:
+        - APIKEY=${APIKEY}
+        - APISECRET=${APISECRET}
+        - AUTHORIZATIONHEADER=${AUTHORIZATIONHEADER}
+        - DB_USERNAME=${DB_USERNAME}
+        - DB_PASSWORD=${DB_PASSWORD}
+        - DB_SERVER_NAME=${DB_SERVER_NAME}
+        - DB_DATABASE_NAME=${DB_DATABASE_NAME}
+        - PORT=${PORT}
     ports:
       - "5000:5000"
     depends_on:
       - db
     networks:
       - custom_network
+
   db:
     image: postgres:latest
     environment:
