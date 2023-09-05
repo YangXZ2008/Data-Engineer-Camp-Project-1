@@ -1,5 +1,5 @@
 # Use a base image with Python pre-installed
-FROM python:3.8
+FROM python:3.9
 
 ARG APIKEY
 ARG APISECRET
