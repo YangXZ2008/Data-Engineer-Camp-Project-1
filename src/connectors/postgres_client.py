@@ -24,11 +24,11 @@ class PostgreSqlClient:
         # Use the correct drivername "postgresql" here
         connection_url = URL.create(
             drivername="postgresql+pg8000",
-            username=username,
-            password=password,
-            host="db",  # Use "db" as the hostname
-            port=port,
-            database=database_name,
+            username='postgres',
+            password='postgres',
+            host="project1.c8jtsjfdp6ka.us-east-1.rds.amazonaws.com",  # Use "db" as the hostname
+            port=5432,
+            database="postgres",
         )
 
         self.engine = create_engine(connection_url)
