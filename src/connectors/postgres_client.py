@@ -1,11 +1,13 @@
 from sqlalchemy import create_engine, Table, MetaData
 from sqlalchemy.engine import URL
 from sqlalchemy.dialects import postgresql
+from sqlalchemy import create_engine, Table, MetaData
+from sqlalchemy.dialects import postgresql
 
 
 class PostgreSqlClient:
     """
-    A client for querying a PostgreSQL database.
+    A client for querying postgresql database. 
     """
 
     def __init__(self,
@@ -21,23 +23,21 @@ class PostgreSqlClient:
         self.password = password
         self.port = port
 
-        # Use the correct drivername "postgresql" here
         connection_url = URL.create(
             drivername="postgresql",
-            username='postgres',
-            password='postgres',
-            host="database-1.c8jtsjfdp6ka.us-east-1.rds.amazonaws.com",  # Use "db" as the hostname
-            port=5432,
-            database="postgres",
+            username=username,
+            password=password,
+            host=server_name,
+            port=port,
+            database=database_name,
         )
 
         self.engine = create_engine(connection_url)
 
-    def write_to_table(self, data, table: Table, metadata: MetaData):
+    def write_to_table(self, data: list[dict], table: Table, metadata: MetaData) -> None:
         key_columns = [
             pk_column.name for pk_column in table.primary_key.columns.values()]
-        # creates the table if it does not exist
-        metadata.create_all(self.engine)
+        metadata.create_all(self.engine)  # creates table if it does not exist
         insert_statement = postgresql.insert(table).values(data)
         upsert_statement = insert_statement.on_conflict_do_update(
             index_elements=key_columns,

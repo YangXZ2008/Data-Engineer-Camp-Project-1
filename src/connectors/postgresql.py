@@ -23,11 +23,11 @@ class PostgreSqlClient:
 
         connection_url = URL.create(
             drivername="postgresql",
-            username="postgres",
-            password="postgres",
-            host="database-1.c8jtsjfdp6ka.us-east-1.rds.amazonaws.com",
-            port=5432,
-            database="postgres",
+            username=username,
+            password=password,
+            host=server_name,
+            port=port,
+            database=database_name,
         )
 
         self.engine = create_engine(connection_url)
