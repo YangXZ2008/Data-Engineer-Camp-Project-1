@@ -1,7 +1,4 @@
 import pandas as pd
-from datetime import datetime, timezone, timedelta
-from pathlib import Path
-from sqlalchemy import Table, MetaData
 from etl_project.connectors.postgresql import PostgreSqlClient
 from etl_project.connectors.nsw_api import NswApiClient
 import uuid

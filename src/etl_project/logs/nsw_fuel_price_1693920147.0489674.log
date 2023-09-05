@@ -1,0 +1,9 @@
+2023-09-06 01:22:27,050 - nsw_fuel_price - INFO - Creating DB client
+2023-09-06 01:22:27,051 - nsw_fuel_price - INFO - Requesting data from NSW
+2023-09-06 01:22:27,051 - nsw_fuel_price - INFO - Extracting NSW data
+2023-09-06 01:22:28,268 - nsw_fuel_price - INFO - Transforming NSW data
+2023-09-06 01:22:28,284 - nsw_fuel_price - INFO - Creating tables in postgres
+2023-09-06 01:22:28,286 - nsw_fuel_price - INFO - Loading data into tables
+2023-09-06 01:22:29,180 - nsw_fuel_price - INFO - Reading SQL script
+2023-09-06 01:22:29,181 - nsw_fuel_price - INFO - Performing SQL transformation
+2023-09-06 01:22:31,930 - nsw_fuel_price - INFO - Pipeline complete

@@ -11,4 +11,4 @@ RANK() OVER(PARTITION BY nfp.fuel_type ORDER BY nfp.price desc) AS rank_fuel_by_
 RANK() OVER(PARTITION BY nfp.station_code ORDER BY nfp.price desc) AS rank_fuel_by_station
 FROM nsw_fuel_price nfp
 INNER JOIN nsw_stations ns ON ns.station_code = nfp.station_code 
-ORDER BY nfp.station_code;
+ORDER BY nfp.station_code

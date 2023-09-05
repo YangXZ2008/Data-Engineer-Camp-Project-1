@@ -1,0 +1,9 @@
+2023-09-06 01:17:25,007 - nsw_fuel_price - INFO - Creating DB client
+2023-09-06 01:17:25,008 - nsw_fuel_price - INFO - Requesting data from NSW
+2023-09-06 01:17:25,008 - nsw_fuel_price - INFO - Extracting NSW data
+2023-09-06 01:17:26,243 - nsw_fuel_price - INFO - Transforming NSW data
+2023-09-06 01:17:26,258 - nsw_fuel_price - INFO - Creating tables in postgres
+2023-09-06 01:17:26,259 - nsw_fuel_price - INFO - Loading data into tables
+2023-09-06 01:17:27,136 - nsw_fuel_price - INFO - Reading SQL script
+2023-09-06 01:17:27,136 - nsw_fuel_price - INFO - Performing SQL transformation
+2023-09-06 01:17:27,137 - nsw_fuel_price - ERROR - Pipeline failed with exception fuel_price_insight.sql

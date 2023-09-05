@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Table, MetaData
+from sqlalchemy import create_engine, Table, MetaData, Column, inspect
 from sqlalchemy.engine import URL
 from sqlalchemy.dialects import postgresql
 
@@ -31,12 +31,21 @@ class PostgreSqlClient:
 
         self.engine = create_engine(connection_url)
 
-    def write_to_table(self, data: list[dict], table: Table, metadata: MetaData, loadtype:str='normal', chunk:int=1000 ) -> None:
-        LOAD_TYPE = ['normal', 'chunk']
+    def execute_sql(self, sql: str) -> None:
+        self.engine.execute(sql)
+
+    def create_table(self, metadata: MetaData) -> None:
+        """
+        Creates table provided in the metadata object
+        """
+        metadata.create_all(self.engine)
+
+    def write_to_table(self, data: list[dict], table: Table, metadata: MetaData, loadtype:str='insert', chunk:int=1000 ) -> None:
+        LOAD_TYPE = ['insert', 'chunk']
         metadata.create_all(self.engine) # creates table if it does not exist
 
         if loadtype not in  LOAD_TYPE:
-            raise Exception(f"Try normal or chunk!")
+            raise Exception(f"Try insert or chunk!")
         
         elif loadtype == LOAD_TYPE[0]:
             insert_statement = postgresql.insert(table).values(data)
