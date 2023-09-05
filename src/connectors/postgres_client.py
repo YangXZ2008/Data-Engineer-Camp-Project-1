@@ -23,7 +23,7 @@ class PostgreSqlClient:
 
         # Use the correct drivername "postgresql" here
         connection_url = URL.create(
-            drivername="postgresql",
+            drivername="postgresql+pg8000",
             username=username,
             password=password,
             host="db",  # Use "db" as the hostname
