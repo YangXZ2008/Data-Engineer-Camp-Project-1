@@ -23,8 +23,7 @@ if __name__ == '__main__':
     PORT = os.environ.get("PORT")
 
     testAPI = FuelAPIClient(API, APISECRET, AUTHORIZATIONHEADER)
-    # testAPI.get_access_token()
-    # testAPI.get_fuel_data()
+
     data_station, data_fuel = extract(testAPI)
 
     df_station = transform(data_station, table="station")
@@ -49,8 +48,6 @@ if __name__ == '__main__':
         Column("address", String),
         Column("state", String)
     )
-    load(df_exchange=df_station, postgresql_client=postgresql_client,
-         table=table_station, metadata=metadata_station)
 
     metadata_fuel = MetaData()
     table_fuel = Table(
