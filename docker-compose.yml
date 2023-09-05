@@ -19,6 +19,7 @@ services:
       - db
     networks:
       - custom_network
+    restart: always
 
   db:
     image: postgres:latest

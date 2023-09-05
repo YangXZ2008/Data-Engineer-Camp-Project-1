@@ -48,6 +48,8 @@ if __name__ == '__main__':
         Column("address", String),
         Column("state", String)
     )
+    load(df_exchange=df_station, postgresql_client=postgresql_client,
+         table=table_station, metadata=metadata_station)
 
     metadata_fuel = MetaData()
     table_fuel = Table(
