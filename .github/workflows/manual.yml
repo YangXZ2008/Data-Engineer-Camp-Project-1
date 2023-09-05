@@ -27,9 +27,11 @@ jobs:
       - name: Build and tag Docker images
         run: |
           docker-compose -f "docker-compose.yml" up -d --build
-          docker tag your-image-name:latest 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1:latest
+          docker tag data-engineer-camp-project-1_app_1:latest 444987252577.dkr.ecr.us-east-1.amazonaws.com/data-engineer-camp-project-1_app:latest
+          docker tag data-engineer-camp-project-1_db_1:latest 444987252577.dkr.ecr.us-east-1.amazonaws.com/data-engineer-camp-project-1_db:latest
           docker images
 
       - name: Push Docker images to ECR
         run: |
-          docker push 444987252577.dkr.ecr.us-east-1.amazonaws.com/project1:latest
+          docker push 444987252577.dkr.ecr.us-east-1.amazonaws.com/data-engineer-camp-project-1_app:latest
+          docker push 444987252577.dkr.ecr.us-east-1.amazonaws.com/data-engineer-camp-project-1_db:latest
