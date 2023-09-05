@@ -23,9 +23,7 @@ if __name__ == '__main__':
     PORT = os.environ.get("PORT")
 
     testAPI = FuelAPIClient(API, APISECRET, AUTHORIZATIONHEADER)
-
     data_station, data_fuel = extract(testAPI)
-
     df_station = transform(data_station, table="station")
     df_fuel = transform(data_fuel, table="fuel")
 
