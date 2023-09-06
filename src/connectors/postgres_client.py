@@ -34,8 +34,7 @@ class PostgreSqlClient:
 
         self.engine = create_engine(connection_url)
 
-    def write_to_table(self, data: list[dict], table: Table) -> None:
-        metadata = MetaData()
+    def write_to_table(self, data: list[dict], table: Table, metadata: MetaData) -> None:
         key_columns = [
             pk_column.name for pk_column in table.primary_key.columns.values()]
         metadata.create_all(self.engine)  # creates table if it does not exist

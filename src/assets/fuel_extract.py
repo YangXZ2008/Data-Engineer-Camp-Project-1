@@ -1,4 +1,7 @@
+
 import pandas as pd
+
+
 from connectors.fuel_api import FuelAPIClient
 from connectors.postgres_client import PostgreSqlClient
 
@@ -31,7 +34,6 @@ def transform(df, table="station"):
     return df_renamed
 
 
-def load(df_exchange: pd.DataFrame, postgresql_client: PostgreSqlClient, table):
-
+def load(df_exchange: pd.DataFrame, postgresql_client: PostgreSqlClient, table, metadata):
     postgresql_client.write_to_table(data=df_exchange.to_dict(
-        orient="records"), table=table)
+        orient="records"), table=table, metadata=metadata)

@@ -47,7 +47,7 @@ if __name__ == '__main__':
         Column("state", String)
     )
     load(df_exchange=df_station, postgresql_client=postgresql_client,
-         table=table_station)
+         table=table_station, metadata=metadata_station)
 
     metadata_fuel = MetaData()
     table_fuel = Table(
@@ -59,5 +59,11 @@ if __name__ == '__main__':
         Column("state", String)
     )
 
-    load(df_exchange=df_fuel, postgresql_client=postgresql_client,
-         table=table_fuel)
+    if df_fuel.shape[0] > 5000:
+        load(df_exchange=df_fuel[:5000], postgresql_client=postgresql_client,
+             table=table_fuel, metadata=metadata_fuel)
+        load(df_exchange=df_fuel[5000:], postgresql_client=postgresql_client,
+             table=table_fuel, metadata=metadata_fuel)
+    else:
+        load(df_exchange=df_fuel, postgresql_client=postgresql_client,
+             table=table_fuel, metadata=metadata_fuel)
