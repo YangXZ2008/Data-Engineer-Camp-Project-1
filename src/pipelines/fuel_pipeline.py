@@ -4,8 +4,6 @@ from sqlalchemy import Table, Column, Integer, String, MetaData, Float
 from connectors.fuel_api import FuelAPIClient
 from connectors.postgres_client import PostgreSqlClient
 from assets.fuel_extract import extract, load, transform
-import schedule
-import time
 
 
 def load_config():
@@ -23,9 +21,9 @@ def load_config():
 
 
 def create_database_tables():
-    metadata = MetaData()
+    station_metadata = MetaData()
     table_station = Table(
-        "station", metadata,
+        "station", station_metadata,
         Column("station_code", Integer, primary_key=True),
         Column("lat", Float, primary_key=True),
         Column("lon", Float, primary_key=True),
@@ -34,8 +32,9 @@ def create_database_tables():
         Column("address", String),
         Column("state", String)
     )
+    fuel_metadata = MetaData()
     table_fuel = Table(
-        "fuel_prices", metadata,
+        "fuel_prices", fuel_metadata,
         Column("station_code", Integer, primary_key=True),
         Column("last_updated", String, primary_key=True),
         Column("fuel_type", String, primary_key=True),
