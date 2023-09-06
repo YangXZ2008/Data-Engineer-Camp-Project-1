@@ -5,7 +5,7 @@ from connectors.fuel_api import FuelAPIClient
 from connectors.postgres_client import PostgreSqlClient
 from assets.fuel_extract import extract, load, transform
 from assets.pipeline_logging import PipelineLogging
-import datetime
+from datetime import datetime
 
 
 def initialize_logger():
