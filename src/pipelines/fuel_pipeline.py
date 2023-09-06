@@ -84,11 +84,15 @@ def create_fuel_metadata_and_table(table_name):
 
 
 def calculate_average_fuel_prices(df_fuel):
-
     df_fuel['date'] = df_fuel['last_updated'].apply(
         lambda x: datetime.strptime(x[:10], '%d/%m/%Y'))
+
     avg_prices = df_fuel.groupby(['date', 'fuel_type'])[
         'price'].mean().reset_index()
+    avg_prices.columns = ['date', 'fuel_type', 'average_price']
+    avg_prices['date'] = avg_prices['date'].astype(Date)
+    avg_prices['average_price'] = avg_prices['average_price'].astype(Float)
+
     return avg_prices
 
 
