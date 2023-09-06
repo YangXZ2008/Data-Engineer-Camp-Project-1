@@ -5,33 +5,24 @@ from connectors.fuel_api import FuelAPIClient
 from connectors.postgres_client import PostgreSqlClient
 from assets.fuel_extract import extract, load, transform
 import schedule
+import time
 
 
-if __name__ == '__main__':
-
+def load_config():
     load_dotenv()
-    API = os.getenv('APIKEY')
-    APISECRET = os.getenv('APISECRET')
-    AUTHORIZATIONHEADER = os.getenv('AUTHORIZATIONHEADER')
-    DB_USERNAME = os.environ.get("DB_USERNAME")
-    DB_PASSWORD = os.environ.get("DB_PASSWORD")
-    SERVER_NAME = os.environ.get("DB_SERVER_NAME")
-    DATABASE_NAME = os.environ.get("DB_DATABASE_NAME")
-    PORT = os.environ.get("PORT")
+    return {
+        "API": os.getenv('APIKEY'),
+        "APISECRET": os.getenv('APISECRET'),
+        "AUTHORIZATIONHEADER": os.getenv('AUTHORIZATIONHEADER'),
+        "DB_USERNAME": os.environ.get("DB_USERNAME"),
+        "DB_PASSWORD": os.environ.get("DB_PASSWORD"),
+        "SERVER_NAME": os.environ.get("DB_SERVER_NAME"),
+        "DATABASE_NAME": os.environ.get("DB_DATABASE_NAME"),
+        "PORT": os.environ.get("PORT"),
+    }
 
-    testAPI = FuelAPIClient(API, APISECRET, AUTHORIZATIONHEADER)
-    data_station, data_fuel = extract(testAPI)
-    df_station = transform(data_station, table="station")
-    df_fuel = transform(data_fuel, table="fuel")
 
-    postgresql_client = PostgreSqlClient(
-        server_name=SERVER_NAME,
-        database_name=DATABASE_NAME,
-        username=DB_USERNAME,
-        password=DB_PASSWORD,
-        port=PORT
-    )
-
+def create_database_tables():
     metadata_station = MetaData()
     table_station = Table(
         "station", metadata_station,
@@ -52,6 +43,29 @@ if __name__ == '__main__':
         Column("price", Float),
         Column("state", String)
     )
+    return table_station, table_fuel
+
+
+def main():
+    config = load_config()
+    testAPI = FuelAPIClient(
+        config["API"], config["APISECRET"], config["AUTHORIZATIONHEADER"])
+    data_station, data_fuel = extract(testAPI)
+    df_station = transform(data_station, table="station")
+    df_fuel = transform(data_fuel, table="fuel")
+
+    postgresql_client = PostgreSqlClient(
+        server_name=config["SERVER_NAME"],
+        database_name=config["DATABASE_NAME"],
+        username=config["DB_USERNAME"],
+        password=config["DB_PASSWORD"],
+        port=config["PORT"]
+    )
+
+    table_station, table_fuel = create_database_tables()
+
+    metadata_station = MetaData()
+    metadata_fuel = MetaData()
 
     try:
         schedule.every(12).hours.do(load, df_exchange=df_fuel, postgresql_client=postgresql_client,
@@ -60,5 +74,10 @@ if __name__ == '__main__':
                                     table=table_station, metadata=metadata_station)
         while True:
             schedule.run_pending()
-    except BaseException as e:
-        print(e)
+            time.sleep(1)
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
+if __name__ == '__main__':
+    main()
