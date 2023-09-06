@@ -65,10 +65,10 @@ def main():
     metadata = MetaData()
 
     try:
-        schedule.every(12).hours.do(load, df_exchange=df_fuel, postgresql_client=postgresql_client,
-                                    table=table_fuel, metadata=metadata)
-        schedule.every(12).hours.do(load, df_exchange=df_station, postgresql_client=postgresql_client,
-                                    table=table_station, metadata=metadata)
+        schedule.every(3).minutes.do(load, df_exchange=df_fuel, postgresql_client=postgresql_client,
+                                     table=table_fuel, metadata=metadata)
+        schedule.every(3).minutes.do(load, df_exchange=df_station, postgresql_client=postgresql_client,
+                                     table=table_station, metadata=metadata)
 
         while True:
             schedule.run_pending()
