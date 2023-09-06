@@ -61,14 +61,14 @@ def main():
     )
 
     table_station, table_fuel = create_database_tables()
-    metadata = MetaData()
-
+    fuel_metadata = MetaData()
+    station_metadata = MetaData()
     try:
         # Run the 'load' function once immediately
         load(df_exchange=df_fuel, postgresql_client=postgresql_client,
-             table=table_fuel, metadata=metadata)
+             table=table_fuel, metadata=fuel_metadata)
         load(df_exchange=df_station, postgresql_client=postgresql_client,
-             table=table_station, metadata=metadata)
+             table=table_station, metadata=station_metadata)
     except Exception as e:
         print(f"An error occurred: {e}")
 
