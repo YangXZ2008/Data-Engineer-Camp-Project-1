@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
     # Initialize the logger
     logger = PipelineLogging('fuel_pipeline', '../logs')
-    logger.info("Starting the fuel pipeline...")
+    logger.logger.info("Starting the fuel pipeline...")
 
     try:
         testAPI = FuelAPIClient(API, APISECRET, AUTHORIZATIONHEADER)
@@ -63,8 +63,8 @@ if __name__ == '__main__':
         load(df_exchange=df_fuel, postgresql_client=postgresql_client,
              table=table_fuel, metadata=metadata_fuel)
 
-        logger.info("Fuel pipeline completed successfully.")
+        logger.logger.info("Fuel pipeline completed successfully.")
     except Exception as e:
         # Log any exceptions that occur
-        logger.error(f"An error occurred: {str(e)}")
-        logger.info("Fuel pipeline failed.")
+        logger.logger.error(f"An error occurred: {str(e)}")
+        logger.logger.info("Fuel pipeline failed.")
