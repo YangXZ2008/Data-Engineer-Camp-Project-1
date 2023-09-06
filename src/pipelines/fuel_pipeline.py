@@ -6,7 +6,6 @@ from connectors.postgres_client import PostgreSqlClient
 from assets.fuel_extract import extract, load, transform
 from assets.pipeline_logging import PipelineLogging
 from datetime import datetime
-from jinja2 import Environment, FileSystemLoader
 
 
 def initialize_logger():
@@ -135,11 +134,6 @@ def main():
             "average_fuel_prices")
         load(df_exchange=avg_prices, postgresql_client=postgresql_client,
              table=table_avg_prices, metadata=metadata_avg_prices)
-        env = Environment(loader=FileSystemLoader('../'))
-        template = env.get_template('avg_fuel_price.sql')
-        rendered_sql = template.render()
-        postgresql_client.engine.execute(rendered_sql)
-        logger.logger.info("Fuel pipeline completed successfully.")
 
     except Exception as e:
         logger.logger.error(f"An error occurred: {str(e)}")
