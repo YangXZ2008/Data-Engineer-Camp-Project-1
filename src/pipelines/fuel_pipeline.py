@@ -43,9 +43,6 @@ if __name__ == '__main__':
         Column("address", String),
         Column("state", String)
     )
-    load(df_exchange=df_station, postgresql_client=postgresql_client,
-         table=table_station, metadata=metadata_station)
-
     metadata_fuel = MetaData()
     table_fuel = Table(
         "fuel_prices", metadata_fuel,
@@ -57,8 +54,10 @@ if __name__ == '__main__':
     )
 
     try:
-        schedule.every(12).hour.do(load, df_exchange=df_fuel, postgresql_client=postgresql_client,
-                                   table=table_fuel, metadata=metadata_fuel)
+        schedule.every(12).hours.do(load, df_exchange=df_fuel, postgresql_client=postgresql_client,
+                                    table=table_fuel, metadata=metadata_fuel)
+        schedule.every(12).hours.do(load, df_exchange=df_station, postgresql_client=postgresql_client,
+                                    table=table_station, metadata=metadata_station)
         while True:
             schedule.run_pending()
     except BaseException as e:
