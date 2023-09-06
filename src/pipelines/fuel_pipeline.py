@@ -65,14 +65,11 @@ def main():
     metadata = MetaData()
 
     try:
-        schedule.every(3).minutes.do(load, df_exchange=df_fuel, postgresql_client=postgresql_client,
-                                     table=table_fuel, metadata=metadata)
-        schedule.every(3).minutes.do(load, df_exchange=df_station, postgresql_client=postgresql_client,
-                                     table=table_station, metadata=metadata)
-
-        while True:
-            schedule.run_pending()
-            time.sleep(1)
+        # Run the 'load' function once immediately
+        load(df_exchange=df_fuel, postgresql_client=postgresql_client,
+             table=table_fuel, metadata=metadata)
+        load(df_exchange=df_station, postgresql_client=postgresql_client,
+             table=table_station, metadata=metadata)
     except Exception as e:
         print(f"An error occurred: {e}")
 
