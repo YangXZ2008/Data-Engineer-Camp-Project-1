@@ -1,13 +1,10 @@
-import json
-from pprint import pprint
-import pandas as pd
 from dotenv import load_dotenv
 import os
-from datetime import datetime
 from sqlalchemy import Table, Column, Integer, String, MetaData, Float
 from connectors.fuel_api import FuelAPIClient
 from connectors.postgres_client import PostgreSqlClient
 from assets.fuel_extract import extract, load, transform
+import schedule
 
 
 if __name__ == '__main__':
@@ -59,11 +56,10 @@ if __name__ == '__main__':
         Column("state", String)
     )
 
-    if df_fuel.shape[0] > 5000:
-        load(df_exchange=df_fuel[:5000], postgresql_client=postgresql_client,
-             table=table_fuel, metadata=metadata_fuel)
-        load(df_exchange=df_fuel[5000:], postgresql_client=postgresql_client,
-             table=table_fuel, metadata=metadata_fuel)
-    else:
-        load(df_exchange=df_fuel, postgresql_client=postgresql_client,
-             table=table_fuel, metadata=metadata_fuel)
+    try:
+        schedule.every(12).hour.do(load, df_exchange=df_fuel, postgresql_client=postgresql_client,
+                                   table=table_fuel, metadata=metadata_fuel)
+        while True:
+            schedule.run_pending()
+    except BaseException as e:
+        print(e)
