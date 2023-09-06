@@ -4,7 +4,7 @@ from sqlalchemy import Table, Column, Integer, String, MetaData, Float
 from connectors.fuel_api import FuelAPIClient
 from connectors.postgres_client import PostgreSqlClient
 from assets.fuel_extract import extract, load, transform
-from assets.pipeline_logging import configure_logging
+from assets.pipeline_logging import PipelineLogging
 
 
 def load_config():
@@ -30,7 +30,7 @@ def main():
     config = load_config()
 
     # Configure logging
-    logger = configure_logging()
+    logger = PipelineLogging()
 
     try:
         # Initialize the Fuel API client
