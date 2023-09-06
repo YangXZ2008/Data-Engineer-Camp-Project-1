@@ -1,9 +1,5 @@
-import json
-from pprint import pprint
 import pandas as pd
-from dotenv import load_dotenv
-import os
-from datetime import datetime
+
 
 from connectors.fuel_api import FuelAPIClient
 from connectors.postgres_client import PostgreSqlClient
