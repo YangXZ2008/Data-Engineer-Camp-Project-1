@@ -30,7 +30,7 @@ def main():
     config = load_config()
 
     # Configure logging
-    logger = PipelineLogging()
+    logger = PipelineLogging('fuel_pipeline', '../logs')
 
     try:
         # Initialize the Fuel API client
