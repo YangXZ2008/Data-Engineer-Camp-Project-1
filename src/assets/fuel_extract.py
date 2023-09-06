@@ -1,7 +1,5 @@
 
 import pandas as pd
-
-
 from connectors.fuel_api import FuelAPIClient
 from connectors.postgres_client import PostgreSqlClient
 

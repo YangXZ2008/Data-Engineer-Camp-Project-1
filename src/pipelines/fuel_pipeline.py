@@ -6,6 +6,7 @@ from connectors.postgres_client import PostgreSqlClient
 from assets.fuel_extract import extract, load, transform
 from assets.pipeline_logging import PipelineLogging
 from datetime import datetime
+from jinja2 import Environment, FileSystemLoader
 
 
 def initialize_logger():
@@ -68,27 +69,6 @@ def create_station_metadata_and_table(table_name):
     return metadata, table
 
 
-def calculate_average_fuel_prices(df_fuel):
-
-    df_fuel['date'] = df_fuel['last_updated'].apply(
-        lambda x: datetime.strptime(x[:10], '%d/%m/%Y'))
-    avg_prices = df_fuel.groupby(['date', 'fuel_type'])[
-        'price'].mean().reset_index()
-    return avg_prices
-
-
-def create_avg_prices_metadata_and_table(table_name):
-    """Create metadata and table for average fuel prices."""
-    metadata = MetaData()
-    table = Table(
-        table_name, metadata,
-        Column("date", Date, primary_key=True),
-        Column("fuel_type", String, primary_key=True),
-        Column("average_price", Float),
-    )
-    return metadata, table
-
-
 def create_fuel_metadata_and_table(table_name):
     """Create metadata and table for a given table name."""
     metadata = MetaData()
@@ -101,6 +81,27 @@ def create_fuel_metadata_and_table(table_name):
         Column("state", String)
     )
     return metadata, table
+
+
+# def calculate_average_fuel_prices(df_fuel):
+
+#     df_fuel['date'] = df_fuel['last_updated'].apply(
+#         lambda x: datetime.strptime(x[:10], '%d/%m/%Y'))
+#     avg_prices = df_fuel.groupby(['date', 'fuel_type'])[
+#         'price'].mean().reset_index()
+#     return avg_prices
+
+
+# def create_avg_prices_metadata_and_table(table_name):
+#     """Create metadata and table for average fuel prices."""
+#     metadata = MetaData()
+#     table = Table(
+#         table_name, metadata,
+#         Column("date", Date, primary_key=True),
+#         Column("fuel_type", String, primary_key=True),
+#         Column("average_price", Float),
+#     )
+#     return metadata, table
 
 
 def main():
@@ -125,13 +126,17 @@ def main():
         load(df_exchange=df_fuel, postgresql_client=postgresql_client,
              table=table_fuel, metadata=metadata_fuel)
 
-        avg_prices = calculate_average_fuel_prices(df_fuel)
-        metadata_avg_prices, table_avg_prices = create_avg_prices_metadata_and_table(
-            "average_fuel_prices")
-        load(df_exchange=avg_prices, postgresql_client=postgresql_client,
-             table=table_avg_prices, metadata=metadata_avg_prices)
-
+        # avg_prices = calculate_average_fuel_prices(df_fuel)
+        # metadata_avg_prices, table_avg_prices = create_avg_prices_metadata_and_table(
+        #     "average_fuel_prices")
+        # load(df_exchange=avg_prices, postgresql_client=postgresql_client,
+        #      table=table_avg_prices, metadata=metadata_avg_prices)
+        env = Environment(loader=FileSystemLoader('../sql'))
+        template = env.get_template('avg_fuel_price.sql')
+        rendered_sql = template.render()
+        postgresql_client.engine.execute(rendered_sql)
         logger.logger.info("Fuel pipeline completed successfully.")
+
     except Exception as e:
         logger.logger.error(f"An error occurred: {str(e)}")
         logger.logger.info("Fuel pipeline failed.")

@@ -6,3 +6,4 @@ sqlalchemy==1.4.25
 python-dotenv==1.0.0
 pg8000
 schedule
+Jinja2
