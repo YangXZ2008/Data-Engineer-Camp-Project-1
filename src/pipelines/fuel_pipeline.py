@@ -89,8 +89,6 @@ def calculate_average_fuel_prices(df_fuel):
     avg_prices = df_fuel.groupby(['date', 'fuel_type'])[
         'price'].mean().reset_index()
     avg_prices.columns = ['date', 'fuel_type', 'average_price']
-    avg_prices['date'] = avg_prices['date'].astype(Date)
-    avg_prices['average_price'] = avg_prices['average_price'].astype(Float)
 
     return avg_prices
 
@@ -100,7 +98,7 @@ def create_avg_prices_metadata_and_table(table_name):
     metadata = MetaData()
     table = Table(
         table_name, metadata,
-        Column("date", Date, primary_key=True),
+        Column("date", String, primary_key=True),
         Column("fuel_type", String, primary_key=True),
         Column("average_price", Float),
     )
