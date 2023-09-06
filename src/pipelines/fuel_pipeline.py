@@ -51,7 +51,7 @@ def initialize_postgresql_client(server_name, database_name, username, password,
     )
 
 
-def create_metadata_and_table(table_name):
+def create_station_metadata_and_table(table_name):
     """Create metadata and table for a given table name."""
     metadata = MetaData()
     table = Table(
@@ -62,6 +62,20 @@ def create_metadata_and_table(table_name):
         Column("name", String),
         Column("brand", String),
         Column("address", String),
+        Column("state", String)
+    )
+    return metadata, table
+
+
+def create_fuel_metadata_and_table(table_name):
+    """Create metadata and table for a given table name."""
+    metadata = MetaData()
+    table = Table(
+        table_name, metadata,
+        Column("station_code", Integer, primary_key=True),
+        Column("last_updated", String, primary_key=True),
+        Column("fuel_type", String, primary_key=True),
+        Column("price", Float),
         Column("state", String)
     )
     return metadata, table
@@ -79,11 +93,13 @@ def main():
         postgresql_client = initialize_postgresql_client(
             server_name, database_name, db_username, db_password, port)
 
-        metadata_station, table_station = create_metadata_and_table("station")
+        metadata_station, table_station = create_station_metadata_and_table(
+            "station")
         load(df_exchange=df_station, postgresql_client=postgresql_client,
              table=table_station, metadata=metadata_station)
 
-        metadata_fuel, table_fuel = create_metadata_and_table("fuel_prices")
+        metadata_fuel, table_fuel = create_fuel_metadata_and_table(
+            "fuel_prices")
         load(df_exchange=df_fuel, postgresql_client=postgresql_client,
              table=table_fuel, metadata=metadata_fuel)
 
