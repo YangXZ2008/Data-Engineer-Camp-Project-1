@@ -8,3 +8,4 @@ pg8000
 schedule
 Jinja2
 flask
+gunicorn
