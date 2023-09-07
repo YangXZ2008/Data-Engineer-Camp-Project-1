@@ -7,3 +7,4 @@ python-dotenv==1.0.0
 pg8000
 schedule
 Jinja2
+flask
