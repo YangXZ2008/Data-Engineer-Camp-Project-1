@@ -9,3 +9,4 @@ schedule
 Jinja2
 flask
 gunicorn
+pytest
