@@ -24,8 +24,6 @@ services:
         - DB_SERVER_NAME=${DB_SERVER_NAME}
         - DB_DATABASE_NAME=${DB_DATABASE_NAME}
         - PORT=${PORT}
-    ports:
-      - "5000:5000"
     command: gunicorn --bind 0.0.0.0:8000 --workers 4 "app.create_app:create_app()"
     depends_on:
       - db
