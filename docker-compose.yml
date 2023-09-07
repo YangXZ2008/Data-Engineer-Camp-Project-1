@@ -29,8 +29,12 @@ services:
     command: gunicorn --bind 0.0.0.0:8000 --workers 4 "app.create_app:create_app()"
     depends_on:
       - db
+    volumes:
+      - ./:/var/www
     networks:
-      - custom_network
+      custom_network:
+        aliases:
+          - flask-app
 
   db:
     image: postgres:latest
