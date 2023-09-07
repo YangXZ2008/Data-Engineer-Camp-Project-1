@@ -9,7 +9,7 @@ services:
     ports:
       - 80:80
     networks:
-      - my-network
+      - custom_network
     depends_on:
       - app
   app:
